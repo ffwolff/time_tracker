@@ -3,9 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <title>TimeTracker</title>
+    <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+    <meta name="theme-color" content="#6a5acd">
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='icons/icon-192.png') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <script src="https://unpkg.com/htmx.org@1.9.2"></script>
+    <script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/static/service-worker.js')
+      .then(reg => console.log('✔ Service Worker registrado'))
+      .catch(err => console.error('❌ Falha ao registrar SW', err));
+  }
+</script>
 </head>
 <body>
     <header>
