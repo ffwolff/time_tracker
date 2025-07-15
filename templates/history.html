@@ -1,69 +1,67 @@
 {% extends 'layout.html' %}
 {% block content %}
-<h2>Histórico de Sessões</h2>
+<h2><i class="fa-solid fa-clock-rotate-left"></i>&nbsp;&nbsp;Histórico de Sessões</h2>
 
 <table>
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Tarefa</th>
-            <th>Início</th>
-            <th>Término</th>
-            <th>Ações</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for s in sessions %}
-        <tr>
-            <td>{{ s[0] }}</td>
-            <td>{{ s[1] }}</td>
-            <td>{{ s[2] }}</td>
-            <td>{{ s[3] or 'Em andamento...' }}</td>
-            <td>
-                {% if not s[3] %}
-                <a href="{{ url_for('end_session', session_id=s[0]) }}">Encerrar</a>
-                {% else %}
-                -
-                {% endif %}
-            </td>
-        </tr>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Tarefa</th>
+      <th>Início</th>
+      <th>Término</th>
+      <th>Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for s in sessions %}
+    <tr>
+      <td>{{ s[0] }}</td>
+      <td>{{ s[1] }}</td>
+      <td>{{ s[2] }}</td>
+      <td>{{ s[3] or 'Em andamento...' }}</td>
+      <td>
+        {% if not s[3] %}
+        <a href="{{ url_for('end_session', session_id=s[0]) }}">
+          <i class="fa-solid fa-stop"></i>&nbsp;&nbsp;Encerrar
+        </a>
         {% else %}
-        <tr>
-            <td colspan="5">Nenhuma sessão registrada.</td>
-        </tr>
-        {% endfor %}
-    </tbody>
+        <i class="fa-solid fa-check"></i>
+        {% endif %}
+      </td>
+    </tr>
+    {% else %}
+    <tr><td colspan="5">Nenhuma sessão registrada.</td></tr>
+    {% endfor %}
+  </tbody>
 </table>
 
 <hr>
 
-<h3>Produtividade por Dia</h3>
+<h3><i class="fa-solid fa-chart-bar"></i>&nbsp;&nbsp;Produtividade por Dia</h3>
 <canvas id="productivityChart" width="400" height="200"></canvas>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    const chartData = {{ productivity_data | tojson }};
-    const labels = Object.keys(chartData);
-    const durations = Object.values(chartData);
+  const chartData = {{ productivity_data | tojson }};
+  const labels = Object.keys(chartData);
+  const durations = Object.values(chartData);
 
-    const ctx = document.getElementById('productivityChart').getContext('2d');
-    const chart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: labels,
-            datasets: [{
-                label: 'Tempo total (minutos)',
-                data: durations,
-                backgroundColor: '#6a5acd'
-            }]
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            }
-        }
-    });
+  const ctx = document.getElementById('productivityChart').getContext('2d');
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: 'Tempo total (minutos)',
+        data: durations,
+        backgroundColor: '#6a5acd'
+      }]
+    },
+    options: {
+      scales: {
+        y: { beginAtZero: true }
+      }
+    }
+  });
 </script>
 {% endblock %}

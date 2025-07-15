@@ -1,20 +1,24 @@
 {% extends 'layout.html' %}
 {% block content %}
-<h2>Minhas Tarefas</h2>
 
-<form action="{{ url_for('add_task') }}" method="post">
-    <input type="text" name="task" placeholder="Nova tarefa" required>
-    <button type="submit">Adicionar</button>
+<h2><i class="fa-solid fa-list-check"></i>&nbsp;&nbsp;Suas tarefas</h2>
+
+<form method="post" action="{{ url_for('add_task') }}">
+  <input type="text" name="task" placeholder="Nova tarefa..." required />
+  <button type="submit"><i class="fa-solid fa-plus"></i>&nbsp;&nbsp;Adicionar</button>
 </form>
 
 <ul class="task-list">
-    {% for task in tasks %}
-    <li>
-        {{ task[1] }}
-        <a href="{{ url_for('start_session', task_id=task[0]) }}">▶️ Iniciar Pomodoro</a>
-    </li>
-    {% else %}
-    <li>Nenhuma tarefa cadastrada.</li>
-    {% endfor %}
+  {% for task in tasks %}
+  <li>
+    {{ task[1] }}
+    <a href="{{ url_for('start_session', task_id=task[0]) }}">
+      <i class="fa-solid fa-play"></i>&nbsp;&nbsp;Iniciar Pomodoro
+    </a>
+  </li>
+  {% else %}
+  <li>Nenhuma tarefa cadastrada.</li>
+  {% endfor %}
 </ul>
+
 {% endblock %}
