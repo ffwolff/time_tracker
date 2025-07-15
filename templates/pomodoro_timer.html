@@ -1,0 +1,39 @@
+{% extends 'layout.html' %}
+{% block content %}
+<h2>Pomodoro para: {{ session[1] }}</h2>
+
+<div id="timer" style="font-size:3rem; font-weight:bold;">25:00</div>
+
+<button id="endBtn">Encerrar sessão</button>
+
+<script>
+let seconds = 25 * 60;
+const timerDiv = document.getElementById("timer");
+const endBtn = document.getElementById("endBtn");
+
+function updateTimer() {
+    let min = Math.floor(seconds / 60);
+    let sec = seconds % 60;
+    timerDiv.textContent = `${String(min).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
+    if (seconds > 0) {
+        seconds--;
+        setTimeout(updateTimer, 1000);
+    } else {
+        alert("⏰ Pomodoro finalizado!");
+    }
+}
+
+endBtn.addEventListener('click', () => {
+    // Chama rota para encerrar sessão
+    fetch('{{ url_for("end_session", session_id=session[0]) }}')
+    .then(() => {
+        alert('Sessão encerrada!');
+        window.location.href = '{{ url_for("history") }}';
+    });
+});
+
+updateTimer();
+</script>
+
+<a href="{{ url_for('index') }}">Voltar para tarefas</a>
+{% endblock %}

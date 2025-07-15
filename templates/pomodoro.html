@@ -1,0 +1,11 @@
+{% extends 'layout.html' %}
+{% block content %}
+<h2>Iniciar Pomodoro para: {{ task_name }}</h2>
+
+<form method="post" action="{{ url_for('pomodoro_start') }}">
+    <input type="hidden" name="task_id" value="{{ task_id }}">
+    <button type="submit">Começar Pomodoro (25 minutos)</button>
+</form>
+
+<a href="{{ url_for('index') }}">Voltar</a>
+{% endblock %}
